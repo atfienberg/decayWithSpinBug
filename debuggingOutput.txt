@@ -1,0 +1,69 @@
+atfienberg@haedos:~/g-2/decayWithSpinBugDemo/build$ gdb --args runSim do1.mac
+GNU gdb (Ubuntu 7.7.1-0ubuntu5~14.04.2) 7.7.1
+Copyright (C) 2014 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from runSim...done.
+(gdb) break G4DecayWithSpin.cc:122
+No source file named G4DecayWithSpin.cc.
+Make breakpoint pending on future shared library load? (y or [n]) y
+Breakpoint 1 (G4DecayWithSpin.cc:122) pending.
+(gdb) r
+Starting program: /home/atfienberg/g-2/decayWithSpinBugDemo/build/runSim do1.mac
+Traceback (most recent call last):
+  File "/usr/share/gdb/auto-load/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.19-gdb.py", line 63, in <module>
+    from libstdcxx.v6.printers import register_libstdcxx_printers
+ImportError: No module named 'libstdcxx'
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+        ############################################
+        !!! WARNING - FPE detection is activated !!!
+        ############################################
+
+*************************************************************
+ Geant4 version Name: geant4-10-01-patch-01 [MT]   (27-March-2015)
+                      Copyright : Geant4 Collaboration
+                      Reference : NIM A 506 (2003), 250-303
+                            WWW : http://cern.ch/geant4
+*************************************************************
+
+G4ParticleGun::mu+
+ was defined in terms of KineticEnergy: 1GeV
+ is now defined in terms Momentum: 3.09399GeV/c
+Checking overlaps for volume physCounter ... OK! 
+
+Breakpoint 1, G4DecayWithSpin::DecayIt (this=0x93e480, aTrack=..., aStep=...) at /home/atfienberg/geant4/geant4.10.01.p01/source/processes/decay/src/G4DecayWithSpin.cc:122
+122	                                 Spin_Precession(aStep,B,fRemainderLifeTime);
+(gdb) p fRemainderLifeTime
+$1 = 0.39308857622816556
+(gdb) p aStep.GetStepLength()
+$2 = 3452.8582210394502
+(gdb) p currentInteractionLength
+$3 = 19298094.407241412
+(gdb) p aTrack.GetDynamicParticle()->GetDefinition()->GetPDGLifeTime()
+$4 = 2196.98
+(gdb) q
+A debugging session is active.
+
+	Inferior 1 [process 5476] will be killed.
+
+Quit anyway? (y or n) y
+atfienberg@haedos:~/g-2/decayWithSpinBugDemo/build$ python 
+Python 2.7.6 (default, Jun 22 2015, 17:58:13) 
+[GCC 4.8.2] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>> 3452.8582210394502/19298094.407241412 * 2196.98
+0.39308857622816556
+>>
+>>> 
